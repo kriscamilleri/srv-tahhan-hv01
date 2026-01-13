@@ -1,0 +1,113 @@
+environment_vars:
+  LIBVA_DRIVER_NAME: i965
+
+mqtt:
+  enabled: false
+
+ffmpeg:
+  hwaccel_args: preset-vaapi
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+objects:
+  track:
+    - person
+    - car
+    - dog
+    - cat
+
+# Recording Settings
+record:
+  enabled: true
+  retain:
+    days: 7  # Retain all footage for 3 days
+    mode: all  # Save all recordings
+
+auth:
+  enabled: true
+  reset_admin_password: false
+  cookie_secure: false
+  session_length: 86400  # 24 hours
+  refresh_time: 43200    # 12 hours
+  failed_login_rate_limit: None
+  trusted_proxies: []
+  hash_iterations: 600000
+
+# Cameras
+cameras:
+  Doorbell:
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:THX1Logitech@192.168.254.14/onvif1
+          roles:
+            - record
+            - detect
+    motion:
+      enabled: true
+    detect:
+      enabled: true
+
+  Entrance:
+    ffmpeg:
+      inputs:
+        - path: rtsp://user:THX1Logitech@192.168.254.2/onvif1
+          roles:
+            - record
+            - detect
+    motion:
+      enabled: true
+    detect:
+      enabled: true
+
+  Kitchen:
+    ffmpeg:
+      inputs:
+        - path: rtsp://user:THX1Logitech@192.168.254.3/onvif1
+          roles:
+            - record
+            - detect
+    motion:
+      enabled: true
+    detect:
+      enabled: true
+
+  Sitting:
+    ffmpeg:
+      inputs:
+        - path: rtsp://user:THX1Logitech@192.168.254.4/onvif1
+          roles:
+            - record
+            - detect
+    motion:
+      enabled: true
+    detect:
+      enabled: true
+
+  Facade:
+    ffmpeg:
+      inputs:
+        - path: rtsp://user:THX1Logitech@192.168.254.5/onvif1
+          roles:
+            - record
+            - detect
+    motion:
+      enabled: true
+    detect:
+      enabled: true
+
+  Roof:
+    ffmpeg:
+      inputs:
+        - path: rtsp://user:THX1Logitech@192.168.254.6/onvif1
+          roles:
+            - record
+            - detect
+    motion:
+      enabled: true
+    detect:
+      enabled: true
+
+version: 0.14
