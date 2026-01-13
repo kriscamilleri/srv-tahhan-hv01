@@ -2,6 +2,22 @@
 
 This directory contains backups of the configuration files for the Tahhan Server (Proxmox and Frigate).
 
+## Architecture Overview
+
+The surveillance system is deployed using a nested virtualization strategy for optimal performance and management:
+
+1.  **Proxmox VE (Host)**: The base operating system managing hardware and virtual resources.
+    *   **Hardware Passthrough**: The Google Coral TPU (USB) and Intel Integrated GPU (`/dev/dri/renderD128`) are passed from the host directly to the LXC container.
+    *   **Storage**: A ZFS dataset located at `/zfs-hv01-slow/cctv` is bind-mounted to the LXC for high-performance video storage.
+
+2.  **LXC Container (ID 151 - Debian)**: A lightweight Linux container that acts as the primary service environment.
+    *   **Docker Engine**: Runs inside the LXC to handle container orchestration.
+    *   **Privileged Mode**: The LXC runs in privileged mode to allow seamless access to the passed-through hardware devices.
+
+3.  **Frigate (Docker Container)**: The NVR application running within the LXC.
+    *   **Inference**: Uses the Google Coral TPU for real-time object detection (detecting people, cars, etc.).
+    *   **FFmpeg Acceleration**: Uses Intel VAAPI (`i965` driver) for hardware-accelerated video decoding.
+
 ## Directory Structure
 
 ### [proxmox/](proxmox/)
