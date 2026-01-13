@@ -17,15 +17,14 @@ Contains the Frigate NVR configuration and deployment files.
 - **Description:** Frigate detector settings, camera streams, and Docker container orchestration.
 
 ## Backup Instructions
-To refresh these backups, run the following commands from the project root:
+To refresh these backups, run the following commands from the project root (ensure `.env` variables are exported or substitute manually):
 ```bash
 # Proxmox LXC Config
-sshpass -p 'SSH_PW' ssh root@192.168.0.100 'cat /etc/pve/lxc/151.conf' > backups/proxmox/151.conf
+sshpass -p "$SSH_PW" ssh "$SSH_USER@$SERVER" "cat /etc/pve/lxc/$LXC_ID.conf" > backups/proxmox/$LXC_ID.conf
 
 # Frigate Config
-sshpass -p 'SSH_PW' ssh root@192.168.0.100 'pct exec 151 -- cat /root/frigate/config/config.yml' > backups/frigate/config.yml
+sshpass -p "$SSH_PW" ssh "$SSH_USER@$SERVER" "pct exec $LXC_ID -- cat /root/frigate/config/config.yml" > backups/frigate/config.yml
 
 # Frigate Docker Compose
-sshpass -p 'SSH_PW' ssh root@192.168.0.100 'pct exec 151 -- cat /root/frigate/docker-compose.yml' > backups/frigate/docker-compose.yml
+sshpass -p "$SSH_PW" ssh "$SSH_USER@$SERVER" "pct exec $LXC_ID -- cat /root/frigate/docker-compose.yml" > backups/frigate/docker-compose.yml
 ```
-*(Replace SSH_PW with the password from .env)*
