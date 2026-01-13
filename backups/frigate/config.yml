@@ -1,11 +1,16 @@
 environment_vars:
   LIBVA_DRIVER_NAME: i965
 
+ui:
+  timezone: Europe/Malta
+
 mqtt:
   enabled: false
 
 ffmpeg:
-  hwaccel_args: preset-vaapi
+  hwaccel_args: preset-intel-qsv-h264
+  output_args:
+    record: preset-record-generic-audio-aac
 
 detectors:
   coral:
@@ -36,6 +41,9 @@ auth:
   trusted_proxies: []
   hash_iterations: 600000
 
+detect:
+  enabled: true
+
 # Cameras
 cameras:
   Doorbell:
@@ -45,6 +53,11 @@ cameras:
           roles:
             - record
             - detect
+    onvif:
+      host: 192.168.254.14
+      user: admin
+      password: THX1Logitech
+      ignore_time_mismatch: true
     motion:
       enabled: true
     detect:
@@ -57,6 +70,11 @@ cameras:
           roles:
             - record
             - detect
+    onvif:
+      host: 192.168.254.2
+      user: user
+      password: THX1Logitech
+      ignore_time_mismatch: true
     motion:
       enabled: true
     detect:
@@ -69,6 +87,11 @@ cameras:
           roles:
             - record
             - detect
+    onvif:
+      host: 192.168.254.3
+      user: user
+      password: THX1Logitech
+      ignore_time_mismatch: true
     motion:
       enabled: true
     detect:
@@ -81,6 +104,11 @@ cameras:
           roles:
             - record
             - detect
+    onvif:
+      host: 192.168.254.4
+      user: user
+      password: THX1Logitech
+      ignore_time_mismatch: true
     motion:
       enabled: true
     detect:
@@ -93,6 +121,11 @@ cameras:
           roles:
             - record
             - detect
+    onvif:
+      host: 192.168.254.5
+      user: user
+      password: THX1Logitech
+      ignore_time_mismatch: true
     motion:
       enabled: true
     detect:
@@ -105,9 +138,14 @@ cameras:
           roles:
             - record
             - detect
+    onvif:
+      host: 192.168.254.6
+      user: user
+      password: THX1Logitech
+      ignore_time_mismatch: true
     motion:
       enabled: true
     detect:
       enabled: true
 
-version: 0.14
+version: 0.16
