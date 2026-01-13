@@ -20,9 +20,40 @@ services:
         tmpfs:
           size: 1000000000
     ports:
-#     - "5000:5000"
       - "8971:8971"
       - "1935:1935" # RTMP feeds
+    networks:
+      - frigate-network
     environment:
       FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD}
       TZ: Europe/Malta
+
+  nginx:
+    container_name: nginx-proxy
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
+    networks:
+      - frigate-network
+    depends_on:
+      - frigate
+
+  certbot:
+    image: certbot/dns-cloudflare:latest
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      - ./cloudflare.ini:/cloudflare.ini:ro
+    # Check for renewal every 12 hours
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+networks:
+  frigate-network:
+    driver: bridge

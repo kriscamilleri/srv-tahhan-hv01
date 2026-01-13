@@ -31,6 +31,9 @@ record:
     days: 7  # Retain all footage for 3 days
     mode: all  # Save all recordings
 
+tls:
+  enabled: false
+
 auth:
   enabled: true
   reset_admin_password: false
@@ -38,7 +41,9 @@ auth:
   session_length: 86400  # 24 hours
   refresh_time: 43200    # 12 hours
   failed_login_rate_limit: None
-  trusted_proxies: []
+  trusted_proxies:
+    - 192.168.0.0/24
+    - 100.64.0.0/10
   hash_iterations: 600000
 
 detect:
